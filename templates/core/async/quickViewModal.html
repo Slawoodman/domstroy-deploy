@@ -1,0 +1,109 @@
+{% load static %}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12 mb-md-0 mb-sm-5">
+                    <div class="detail-gallery">
+                        <span class="zoom-icon"><i class="fi-rs-search"></i></span>
+                        <!-- MAIN SLIDES -->
+                        <div class="product-image-slider">
+                            <figure class="border-radius-10">
+                                <img src="{{product.image.url}}" alt="product image" />
+                            </figure>
+                            {% for image in product.p_images.all %}
+                            <figure class="border-radius-10">
+                                <img src="{{image.images}}" alt="product image" />
+                            </figure>
+                            {% endfor %}
+                        
+                        </div>
+                        <div class="slider-nav-thumbnails">
+                            <div><img src="{{product.image.url}}" alt="product image" /></div>
+                            {% for image in product.p_images.all %}
+                            <div><img src="{{image.images}}" alt="product image" /></div>
+                           {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="detail-info pr-30 pl-30">
+                        {% if p.old_price %}
+                            <span class="stock-status out-stock"> Акція </span>
+                        {% else %}
+                            <span class="new">Нове</span>
+                        {% endif %}
+                        
+
+                        <h3 class="title-detail"><a href="{% url 'core:product-detail' pid=product.pid %}" class="text-heading">{{ product.title }}</a></h3>
+                        <div class="product-detail-rating">
+                            <div class="product-rate-cover text-end">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: {{product.get_reviews_precentage}}%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> ({{product.get_reviews_count}} відгуків)</span>
+                            </div>
+                        </div>
+                        <div class="clearfix product-price-cover">
+                            <div class="product-price primary-color float-left">
+                                <span class="current-price text-brand">{{product.price}}₴</span>
+                                <span>
+                                    
+                                {% if product.old_price %}
+                                <span class="save-price font-md color3 ml-15">Знижка {{product.get_precentage|floatformat:0}}%</span>
+                                <span class="old-price font-md ml-15">{{product.old_price}}₴</span>
+                                {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="detail-extralink mb-30">
+                            <div class="product-extra-link2">
+                                <button type="submit" class="button button-add-to-cart add-to-cart-btn" data-index="{{ p.id }}" id="add-to-cart-btn"><i class="fi-rs-shopping-cart"></i>Додати до кошику</button>
+                            </div>
+                        </div>
+                        <div class="font-xs">
+                            <ul>
+                                {% if product.vendor %}
+                                <li class="mb-5">Постачальник: <span class="text-brand">{{product.vendor}}</span></li>
+                                {% endif %}
+                                <li class="mb-5">Дата створення лоту: <span class="text-brand">{{product.date|date:"d M, Y"}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        $(document).ready(function() {
+            $(".add-to-cart-btn").click(function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                var productId = $(this).data("index"); // Get the product ID
+                var quantity = 1; // Default quantity to 1
+
+                var url = "/add-item/" + productId + "?quantity=" + quantity; // Construct the URL with quantity
+
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success) {
+                            // Reload the page after a successful addition
+                            location.reload();
+                        } else {
+                            $('#messages').html('Сталася помилка при додаванні товару до кошику').addClass('error-message').fadeIn().delay(3000).fadeOut();
+                        }
+                        console.log("Product added to cart successfully");
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        console.error("Error adding product to cart:", errorThrown);
+                        $('#messages').html('Сталася помилка при додаванні товару до кошику').addClass('error-message').fadeIn().delay(3000).fadeOut();
+                    }
+                });
+            });
+        });
+</script>

@@ -1,0 +1,302 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<head>
+    <style>
+         
+    </style>
+</head>
+
+<main class="main">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'core:index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Головна</a>
+                <span></span> Магазин <span></span> Фільтри
+            </div>
+        </div>
+    </div>
+    <div class="container mb-30 mt-30">
+        <div class="row">
+            <div class="col-lg-12">
+                <a class="shop-filter-toogle" href="#">
+                    <span class="fi-rs-filter mr-5"></span>
+                    Фільтри
+                    <i class="fi-rs-angle-small-down angle-down"></i>
+                    <i class="fi-rs-angle-small-up angle-up"></i>
+                </a>
+                <div class="shop-product-fillter-header">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
+                            <form  id="filter-form">
+                                <div class="card">
+                                    <h5 class="mb-3">За категоріями</h5>
+                                     
+                                    <ul class="category-list">
+                                        {% for c in categories|slice:"3" %}
+                                        <li class="category-item">
+                                            <input data-filter="category" class="form-check-input filter-checkbox" type="checkbox" name="category" id="exampleCheckbox2" value="{{ c.id }}" />
+                                            &nbsp;&nbsp;
+                                            <a href="{% url 'core:category-product-list' c.cid %}">
+                                                <img src="{{ c.image.url }}" alt="{{ c.name }}" class="category-image" />{{ c.name }}
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    
+                                     
+                                </div>
+                        </div>
+                        {% if vendors %}    
+                        <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
+                            <div class="card">
+                                <h5 class="mb-30">За партнерами</h5>
+                                <div class="d-flex">
+                                <div class="customeee-checkbox mr-80">
+                                        {% for v in vendors %}
+                                        <input class="form-check-input filter-checkbox" data-filter="vendor" type="checkbox" name="vendors" id="vendorCheckbox{{ v.id }}" value="{{ v.id }}" />
+                                        <label class="form-check-label" for="vendorCheckbox{{ v.id }}"><span>{{ v.title }}</span></label>
+                                        <br /><br />
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-2 mb-sm-2">
+                            <div class="card">
+                                <h5 class="mb-30">За тегами</h5>
+                                <div class="sidebar-widget widget-tags">
+                                <ul class="tags-list">
+                                    {% for tag in tags %}
+                                    <li class="hover-up">
+                                        <input type="checkbox" class="form-check-input filter-checkbox" data-filter="tag" name="tags" value="{{ tag.name }}" id="tag_{{ tag.id }}" {% if tag.name in selected_tags %}checked{% endif %}>
+                                        <label for="tag_{{ tag.id }}" style="color:#fb923c">{{ tag.name }}</label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-6 col-md-6 mb-lg-0 mb-md-5 mb-sm-5">
+                        <div class="card">
+                        <h5 class="section-title style-1 mb-30">Фільтрувати за ціною</h5>
+                    <div class="price-filter mb-20">
+                        <div class="price-filter-inner d-flex align-items-center">
+                            <div id="slider-range" class="mb-20 mr-2"></div>
+                            <div class="d-flex flex-column justify-content-center flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="caption flex-shrink-0">Від: <strong id="slider-range-value1" class="text-brand flex-shrink-0">₴ {{ min_max_price.price__min|floatformat:2 }}</strong></div>
+                                    <div class="d-flex align-items-center flex-shrink-0 ml-2">
+                                        <input type="range" name="min_price" value="{{ min_max_price.price__min|floatformat:2 }}" class="slider-range flex-shrink-0" id="min-range" min="{{ min_max_price.price__min }}" max="{{ min_max_price.price__max }}" oninput="updateSlider(this.value, 'slider-range-value1')">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="caption flex-shrink-0">До: <strong id="slider-range-value2" class="text-brand flex-shrink-0">₴ {{ min_max_price.price__max|floatformat:2 }}</strong></div>
+                                    <div class="d-flex align-items-center flex-shrink-0 ml-2">
+                                        <input type="range" name="max_price" value="{{ min_max_price.price__max|floatformat:2 }}" class="slider-range flex-shrink-0" id="max-range" min="{{ min_max_price.price__min }}" max="{{ min_max_price.price__max }}" oninput="updateSlider(this.value, 'slider-range-value2')">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<style>
+    .price-filter-inner {
+        width: 100%;
+    }
+    .slider-range {
+        width: 100%;
+    }
+    .caption {
+        min-width: 80px;
+    }
+
+    
+</style>
+
+<script>
+    function updateSlider(value, id) {
+        document.getElementById(id).textContent = '₴ ' + parseFloat(value).toFixed(2);
+    }
+</script>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="shop-product-fillter">
+                    <div class="totall-product">
+                        <p>Знайшли <strong class="text-brand">{{total_count}}</strong> товарів для тебе!</p>
+                    </div>
+                    <div class="sort-by-product-area">
+                        <div class="sort-by-cover">
+                            <div class="sort-by-product-wrap">
+                                <div class="sort-by">
+                                    <span><i class="fi-rs-apps-sort"></i>Сортувати за:</span>
+                                </div>
+                                <div class="sort-by-dropdown-wrap">
+                                    <span>
+                                        {{ sort_title|default:"Назвою" }} <i class="fi-rs-angle-small-down"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="sort-by-dropdown">
+                                <ul>
+                                    <li><a href="#" class="sort-option" data-sort="name" class="{% if sort_by == 'name' %}active{% endif %}">Назвою</a></li>
+                                    <li><a href="#" class="sort-option" data-sort="price_asc" class="{% if sort_by == 'price_asc' %}active{% endif %}">Ціною, від низької до високої</a></li>
+                                    <li><a href="#" class="sort-option" data-sort="price_desc" class="{% if sort_by == 'price_desc' %}active{% endif %}">Ціною, від високої до низької</a></li>
+                                    <li><a href="#" class="sort-option" data-sort="release_date" class="{% if sort_by == 'release_date' %}active{% endif %}">Датою випуску</a></li>
+                                    <li><a href="#" class="sort-option" data-sort="rating" class="{% if sort_by == 'rating' %}active{% endif %}">Середньою оцінкою</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="product-container">
+                    {% include 'core/async/product-list.html' with products=products %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .category-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.category-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.category-item input {
+    margin-right: 10px;
+}
+
+.category-item a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+.category-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.category-item a:hover {
+    color: #007bff;
+}
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const productContainer = document.getElementById('product-container');
+    const sortOptions = document.querySelectorAll('.sort-option');
+    const filterCheckboxes = document.querySelectorAll('.filter-checkbox');
+    const minPriceInput = document.getElementById('min-range');
+    const maxPriceInput = document.getElementById('max-range');
+    const minPriceValueElement = document.getElementById('min-price-value');
+    const maxPriceValueElement = document.getElementById('max-price-value');
+    const sortByDropdownWrap = document.querySelector('.sort-by-dropdown-wrap');
+    const sortByDropdown = document.querySelector('.sort-by-dropdown');
+
+    sortOptions.forEach(option => option.addEventListener('click', handleSort));
+    filterCheckboxes.forEach(checkbox => checkbox.addEventListener('change', handleFilter));
+    minPriceInput.addEventListener('input', handleFilter);
+    maxPriceInput.addEventListener('input', handleFilter);
+    minPriceInput.addEventListener('input', updateMinPriceValue);
+    maxPriceInput.addEventListener('input', updateMaxPriceValue);
+    sortByDropdownWrap.addEventListener('click', toggleSortByDropdown);
+
+    function toggleSortByDropdown() {
+        sortByDropdown.classList.toggle('show');
+    }
+
+    window.addEventListener('click', function(e) {
+        if (!e.target.closest('.sort-by-product-wrap')) {
+            sortByDropdown.classList.remove('show');
+        }
+    });
+
+    function handleFilter() {
+        fetchFilteredProducts();
+    }
+
+    function handleSort(event) {
+        event.preventDefault();
+        const sortBy = event.target.getAttribute('data-sort');
+        fetchFilteredProducts(sortBy);
+    }
+
+    function fetchFilteredProducts(sortBy = null) {
+        const formData = new FormData();
+        const filterCheckboxes = document.querySelectorAll('.filter-checkbox:checked');
+        filterCheckboxes.forEach(checkbox => {
+            const filterType = checkbox.getAttribute('data-filter');
+            formData.append(filterType, checkbox.value);
+        });
+
+        formData.append('min_price', minPriceInput.value);
+        formData.append('max_price', maxPriceInput.value);
+
+        if (sortBy !== null) {
+            formData.append('sort_by', sortBy);
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+        fetch('/filter_products/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrftoken
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            productContainer.innerHTML = data.html;
+        })
+        .catch(error => console.error('Ошибка:', error));
+    }
+
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function updateMinPriceValue() {
+        minPriceValueElement.textContent = `₴ ${this.value}`;
+    }
+
+    function updateMaxPriceValue() {
+        maxPriceValueElement.textContent = `₴ ${this.value}`;
+    }
+});
+</script>
+
+{% endblock content %}

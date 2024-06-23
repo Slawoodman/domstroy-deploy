@@ -1,0 +1,301 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+ 
+ 
+<main class="main">
+    <div class="page-header mt-30 mb-75">
+        <div class="container">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-3">
+                        <h1 class="mb-15">Категорії</h1>
+                        <div class="breadcrumb">
+                            <a href="{% url 'core:index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Головна</a>
+                            <span ><a href="{% url 'core:product-list' %}" >Магазин</a></span>
+                            {% if page %}
+                            <span  >{{page}}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content mb-50">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="shop-product-fillter mb-50 pr-30">
+                        <div class="totall-product">
+                            <h2>
+                                <img class="w-36px mr-10" src="assets/imgs/theme/icons/category-1.svg" alt="" />
+                                {% if page %}
+                                    Загальна кількість підкатегорій {{ctn}}
+                                {% else %}
+                                    Загальна кількість {{categories.count}} категорій
+                                {% endif %}
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="hello"></div>
+                    <div class="loop-grid pr-30">
+                        <div class="row">
+                            {% for c in categ %}
+                            <article class="col-xl-4 col-lg-6 col-md-6 text-center hover-up mb-30 animated">
+                                <div class="post-thumb">
+                                    {% if page %}
+                                    <a href="{% url 'core:subcategory-product-list' c.pid %}">
+                                         
+                                        <img class="border-radius-15 post-thumb-image" src="{{c.image.url}}" alt="" />
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url 'core:category-product-list' c.cid %}">
+                                        <img class="border-radius-15 post-thumb-image" src="{{c.image.url}}" alt="" />
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="entry-content-2">
+                                    <h4 class="post-title mb-15">
+                                        {% if page %}
+                                            <a href="">{{ c.name }}</a>
+                                        {% else %}
+                                            <a href="{% url 'core:category-product-list' c.cid %}">{{ c.name }}</a>
+                                        {% endif %}
+                                    </h4>
+                                    <div class="entry-meta font-xs color-grey mt-10 pb-10">
+                                        <div>
+                                            <span class="hit-count mr-10">{{c.product_set.all.count }} Товари</span>
+                                        </div>
+                                        <div>
+                                            {% if not page %}
+                                                 
+                                                {% if c.precategory_set.all%}
+                                                    <span class="hit-count mr-10">
+                                                        <a href="{% url 'core:precategory-list' c.cid %}" class="btn-link">
+                                                            <span class="hover-effect">Переглянути {{ c.precategory_set.all.count }} Підкатегорій</span>
+                                                        </a>
+                                                    </span>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <style>
+                                        @keyframes pulse {
+                                            0% {
+                                                transform: scale(1);
+                                            }
+                                            50% {
+                                                transform: scale(1.1);
+                                            }
+                                            100% {
+                                                transform: scale(1);
+                                            }
+                                        }
+                                    
+                                        .font-md {
+                                            font-size: 1.1rem; /* увеличенный размер текста */
+                                        }
+                                    
+                                        .hover-effect:hover {
+                                            text-decoration: underline;
+                                        }
+                                    
+                                        .btn-link {
+                                            display: inline-block;
+                                            padding: 10px 20px; /* отступы внутри кнопки */
+                                            border: 2px solid #ff7f50; /* оранжевый цвет обводки */
+                                            border-radius: 8px; /* скругленные углы */
+                                            color: #ff7f50; /* оранжевый цвет текста */
+                                            text-decoration: none;
+                                        }
+                                    
+                                        .btn-link:hover {
+                                            background-color: #ff7f50; /* оранжевый цвет фона */
+                                            color: #ffffff; /* белый цвет текста */
+                                        }
+                                    
+                                        .hit-count {
+                                            /* остальные стили */
+                                        }
+
+                                                                                /* Style for the post thumb container */
+                                        .post-thumb {
+                                            overflow: hidden; /* Ensures any overflow content is hidden */
+                                            position: relative; /* Ensures the positioning context */
+                                            max-width: 100%; /* Ensures the container doesn't exceed the width of the parent */
+                                        }
+
+                                        /* Style for the images inside post thumb */
+                                        .post-thumb img {
+                                            height: 300px; 
+                                            width: 300px; 
+                                            object-fit: cover; 
+                                            border-radius: 15px;
+                                            transition: transform 0.3s ease-in-out; /* Optional: Adds a smooth transition for hover effects */
+                                        }
+
+                                        /* Responsive adjustments */
+                                        @media (max-width: 768px) {
+                                            .post-thumb img {
+                                                width: 100%; /* Ensures the image takes the full width on smaller screens */
+                                                height: auto; /* Maintains the aspect ratio */
+                                            }
+                                        }
+
+
+                                        /* Основные стили */
+
+                                        body, html {
+                                            overflow-x: hidden; /* Убедитесь, что не будет горизонтального скролла */
+                                        }
+
+                                        /* Style for the post thumb container */
+                                        .post-thumb {
+                                            overflow: hidden; /* Ensures any overflow content is hidden */
+                                            position: relative; /* Ensures the positioning context */
+                                            max-width: 100%; /* Ensures the container doesn't exceed the width of the parent */
+                                        }
+
+                                        /* Style for the images inside post thumb */
+                                        .post-thumb img {
+                                            height: 300px; 
+                                            width: 100%; /* Ensure the image takes the full width of its container */
+                                            object-fit: cover; 
+                                            border-radius: 15px;
+                                            transition: transform 0.3s ease-in-out; /* Optional: Adds a smooth transition for hover effects */
+                                        }
+
+                                        /* Responsive adjustments */
+                                        @media (max-width: 768px) {
+                                            .post-thumb img {
+                                                width: 100%; /* Ensures the image takes the full width on smaller screens */
+                                                height: auto; /* Maintains the aspect ratio */
+                                            }
+                                        }
+
+                                        /* Grid styles */
+                                        .loop-grid .row {
+                                            display: flex;
+                                            flex-wrap: wrap;
+                                        }
+
+                                        /* Ensure each article takes the right amount of space */
+                                        .loop-grid .col-xl-4,
+                                        .loop-grid .col-lg-6,
+                                        .loop-grid .col-md-6 {
+                                            box-sizing: border-box;
+                                            padding: 15px; /* Add some padding around each card */
+                                        }
+
+                                        /* Ensure each card is properly aligned and spaced */
+                                        article.hover-up {
+                                            margin-bottom: 30px; /* Space between cards */
+                                            transition: transform 0.3s ease-in-out;
+                                        }
+
+                                        article.hover-up:hover {
+                                            transform: translateY(-10px); /* Slight hover effect */
+                                        }
+
+                                        /* Ensure the sidebar does not interfere with the content */
+                                        .primary-sidebar {
+                                            position: -webkit-sticky; /* For Safari */
+                                            position: sticky;
+                                            top: 0;
+                                        }
+
+                                        /* Category list styles */
+                                        .category-item {
+                                            display: flex;
+                                            align-items: center;
+                                            margin-bottom: 10px; /* Space between items */
+                                        }
+
+                                        /* Style the category images */
+                                        .category-image {
+                                            width: 50px; /* Set the desired width */
+                                            height: 50px; /* Set the desired height */
+                                            object-fit: cover; /* Ensures the image covers the area without distortion */
+                                            margin-right: 10px; /* Space between the image and the text */
+                                            border-radius: 4px; /* Optional: Adds rounded corners to the images */
+                                        }
+
+                                        /* Style the link */
+                                        .category-item a {
+                                            text-decoration: none;
+                                            color: #333; /* Adjust color as needed */
+                                            font-size: 16px; /* Adjust font size as needed */
+                                            display: flex;
+                                            align-items: center;
+                                        }
+
+                                        /* Style the count span */
+                                        .category-item .count {
+                                            margin-left: auto; /* Push the count to the right end */
+                                            background-color: #f0f0f0; /* Background color for the count */
+                                            padding: 2px 8px; /* Padding for the count */
+                                            border-radius: 12px; /* Rounded corners for the count */
+                                            font-size: 14px; /* Adjust font size as needed */
+                                        }
+
+                                    </style>
+                                    
+                                    
+                                    
+                                    
+                                </div>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                {% if categ.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1"><i class="fi-rs-arrow-small-left"></i></a>
+                                </li>
+                                {% endif %}
+                                {% for num in categ.paginator.page_range %}
+                                <li class="page-item {% if categ.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                                {% endfor %}
+                                {% if categ.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ categ.next_page_number }}"><i class="fi-rs-arrow-small-right"></i></a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-3 primary-sidebar sticky-sidebar">
+                    <div class="widget-area">
+
+                        <div class="sidebar-widget widget-category-2 mb-50">
+                            <h5 class="section-title style-1 mb-30">Категорії</h5>
+                            <ul>
+                                {% for c in categories %}
+                                <li class="category-item">
+                                    <a href="{% url 'core:category-product-list' c.cid %}">
+                                        <img src="{{c.image.url}}" alt="{{c.name}}" class="category-image" />
+                                        {{c.name}}
+                                    </a>
+                                    <span class="count">{{c.product_set.all.count}}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

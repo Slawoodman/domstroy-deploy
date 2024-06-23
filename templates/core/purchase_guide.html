@@ -1,0 +1,56 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="main pages">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Головна</a>
+                    <span></span> Сторінки <span></span> Посібник покупця
+                </div>
+            </div>
+        </div>
+        <div class="page-content pt-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-10 col-lg-12 m-auto">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="single-page pr-30 mb-lg-0 mb-sm-5">
+                                    <div class="single-header style-2">
+                                        <h2>Посібник покупця</h2>
+                                        <div class="entry-meta meta-1 meta-3 font-xs mt-15 mb-15">
+                                            <span class="post-by">Автор: <a href="#">Іван</a></span>
+                                            <span class="post-on has-dot">9 квітня 2020</span>
+                                            <span class="time-reading has-dot">8 хвилин читання</span>
+                                            <span class="hit-count has-dot">29 тис. переглядів</span>
+                                        </div>
+                                    </div>
+                                    <figure class="border-radius-15 mb-30">
+                                        <img class="border-radius-15" src="{% static 'assets/imgs/page/guide-1.png' %}" alt="" />
+                                    </figure>
+                                    <div class="single-content mb-50">
+                                        <h3>1. Реєстрація облікового запису</h3>
+                                        <p>Детальний опис процесу реєстрації облікового запису.</p>
+                                        <ul class="mb-30">
+                                            <li>Ім'я (обов'язково)</li>
+                                            <li>Вік (обов'язково)</li>
+                                            <li>Дата народження (обов'язково)</li>
+                                            <li>Паспортний номер (обов'язково)</li>
+                                            <li>Поточна робота (обов'язково)</li>
+                                            <li>Номер мобільного телефону (обов'язково)</li>
+                                            <li>Email-адреса (обов'язково)</li>
+                                            <li>Хобі та інтереси (необов'язково)</li>
+                                            <li>Соціальні профілі (необов'язково)</li>
+                                        </ul>
+                                        <!-- Додайте решту кроків -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}

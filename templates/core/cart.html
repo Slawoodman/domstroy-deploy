@@ -1,0 +1,167 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'core/async/cart-list.html' with cartitems=cartitems %}
+<script>
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        addEventListeners();
+    });
+} else {
+    addEventListeners();
+}
+
+function addEventListeners() {
+    $(document).on("click", "#clear-cart-link", function(event) {
+        event.preventDefault();
+        clearCart();
+    });
+
+    $(document).on("click", ".delete-product", function(event) {
+        event.preventDefault();
+        var productId = $(this).data("product");
+        removeProduct(productId);
+    });
+
+    const decreaseButtons = document.querySelectorAll('.decrease-quantity');
+    const increaseButtons = document.querySelectorAll('.increase-quantity');
+    const quantityInputs = document.querySelectorAll('.quantity-input');
+
+    decreaseButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.quantity-input');
+            const itemId = input.dataset.itemId;
+            let currentValue = parseInt(input.value);
+            if (currentValue > 1) {
+                currentValue--;
+                input.value = currentValue;
+                updateCartItem(itemId, currentValue);
+            }
+        });
+    });
+
+    increaseButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.quantity-input');
+            const itemId = input.dataset.itemId;
+            let currentValue = parseInt(input.value);
+            currentValue++;
+            input.value = currentValue;
+            updateCartItem(itemId, currentValue);
+        });
+    });
+
+    quantityInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const itemId = this.dataset.itemId;
+            const newQuantity = parseInt(this.value);
+            updateCartItem(itemId, newQuantity);
+        });
+    });
+}
+
+function clearCart() {
+    $.ajax({
+        url: "/delete-from-cart/",
+        type: "POST",
+        data: {
+            product_id: '',
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function(response) {
+            if (response.success) {
+                updateCartContent(response.data);
+            } else {
+                console.error(response.error);
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.error("Произошла ошибка при очистке корзины:", errorThrown);
+        }
+    });
+}
+
+function removeProduct(productId) {
+    $.ajax({
+        url: "/delete-from-cart/",
+        type: "POST",
+        data: {
+            product_id: productId,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function(response) {
+            if (response.success) {
+                updateCartContent(response.data);
+                updatePrices(response);
+            } else {
+                console.error(response.error);
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.error("Произошла ошибка при удалении продукта из корзины:", errorThrown);
+        }
+    });
+}
+
+function updateCartContent(cart_html) {
+    $("#cart-list").html(cart_html);
+    addEventListeners(); 
+}
+
+function updateCartItem(itemId, quantity) {
+    const csrftoken = getCookie('csrftoken'); 
+
+    fetch(`/update-cart/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken 
+        },
+        body: JSON.stringify({ item_id: itemId, quantity: quantity })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Cart item updated successfully');
+            updateCartContent(data.cart_html);
+            updatePrices(data);
+        } else {
+            console.error(data.error);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function updatePrices(data) {
+    const itemPriceElements = document.querySelectorAll('.item-subtotal');
+    itemPriceElements.forEach(element => {
+        const itemId = element.dataset.itemId;
+        if (data.items[itemId]) {
+            element.textContent = `₴${data.items[itemId].price_sum}`;
+        }
+    });
+
+    const totalPriceElement = document.querySelector('#total-price');
+    totalPriceElement.textContent = `₴${data.total_price}`;
+
+    const totalItemsElement = document.querySelector('#total-items');
+    totalItemsElement.textContent = `${data.total_items} товарів`;
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+
+{% endblock content %}

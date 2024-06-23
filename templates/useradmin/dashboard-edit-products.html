@@ -1,0 +1,142 @@
+{% extends 'useradmin/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+{% block content %}   
+<head>
+    <style>
+        select {
+    appearance: none;
+    outline: 0;
+    background: rgba(240, 240, 240, 0.548);
+    background-image: none;
+    width: 100%;
+    color: black;
+    cursor: pointer;
+    border: none;
+    border-radius: 3px;
+}
+        #id_category {
+            position: relative;
+            display: block;
+            width: 15em;
+            font-family: poppins;
+            border: none;
+            height: 3em;
+            line-height: 3;
+            overflow: hidden;
+            border-radius: .25em;
+            padding-bottom: 10px;
+        }
+
+        /* Стили для статуса продукта */
+        #id_product_status {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        /* Стили для цены */
+        #id_price {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+
+        /* Стили для остальных полей */
+        /* Добавьте стили по своему усмотрению */
+        
+    </style>
+</head>
+<section class="content-main">
+    <form method="POST" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Редагування вмісту продукту</h2>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Основне</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>{{ form.errors }}</strong>
+                            </div>
+                        {% endif %}
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="id_title" class="form-label">Назва продукту</label>
+                            {{ form.title }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="id_description" class="form-label">Повний опис</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="id_price" class="form-label">Ціна</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="id_price" class="form-label">Ціна</label>
+                            {{ form.old_price }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="id_product_status" class="form-label">Статус продукту</label>
+                            {{ form.product_status }}
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_in_stock" class="form-label">В наявності</label>
+                            {{ form.in_stock }}
+                        </div>
+                        <div class="mb-4">
+                            <label for="id_featured" class="form-label">Рекомендований</label>
+                            {{ form.featured }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Медіа</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-upload">
+                            <img src="{% static 'assets2/imgs/theme/upload.svg' %}" alt="" />
+                            {{ form.image }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Інше</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row gx-2">
+                            <div class="col-sm-6 mb-3">
+                                <label for="id_category" class="form-label">Категорія</label>
+                                {{ form.category }}
+                            </div>
+                            <label for="id_category" class="form-label">Підкатегорія</label>
+                            {{ form.precategory }}
+                        </div>
+                    </div>
+                </div>
+                <button class="btn mt-3 btn-md rounded font-sm hover-up" type="submit">Завершити редагування</button>
+            </div>
+        </div>
+    </form>
+</section>
+{% endblock content %}

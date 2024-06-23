@@ -1,0 +1,70 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="main pages">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Головна</a>
+                <span></span> Сторінки <span></span> Мій акаунт
+            </div>
+        </div>
+    </div>
+    <div class="page-content pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-8">
+                            <div class="login_wrap widget-taber-content background-white">
+                                <div class="padding_eight_all bg-white">
+
+                                    {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ form.errors }}</strong>
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="heading_s1">
+                                        <h1 class="mb-5">Створити акаунт</h1>
+                                        <p class="mb-30">Вже маєте акаунт? <a href="{% url 'userauths:sign-in' %}">Увійти</a></p>
+                                    </div>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            {{ form.full_name }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.email }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.telephone }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.password1 }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form.password2 }}
+                                        </div>
+
+                                        <div class="form-group mb-30">
+                                            <button type="submit" class="btn btn-fill-out btn-block hover-up font-weight-bold" name="login">Відправити &amp; Зареєструватися</button>
+                                        </div>
+                                        <p class="font-xs text-muted"><strong>Примітка:</strong>Ваші особисті дані будуть використовуватися для підтримки вашого досвіду на цьому вебсайті, для управління доступом до вашого акаунту та для інших цілей, описаних у нашій політиці конфіденційності</p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 pr-30 d-none d-lg-block">
+                            <div class="card-login mt-115">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

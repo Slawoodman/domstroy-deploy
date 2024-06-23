@@ -1,0 +1,163 @@
+<div class="tab-content" id="filteredProducts">
+    <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
+        <div class="row product-grid-4">
+        {% if products %}
+            {% for p in products %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                    <div class="product-cart-wrap mb-30">
+                        <!-- Product content -->
+                        <div class="product-img-action-wrap">
+                            <div class="product-img product-img-zoom">
+                                <a href="{% url 'core:product-detail' pid=p.pid %}">
+                                    <img class="default-img" src="{{ p.image.url }}" alt="" />
+                                    <img class="hover-img" src="{{ p.image.url }}" alt="" />
+                                </a>
+                            </div>
+                            <div class="product-action-1">
+                                <a aria-label="Додати до бажаного" class="action-btn add-to-wishlist" data-product-item="{{p.id}}"><i class="fi-rs-heart"></i></a>
+                                <a aria-label="Перегляд"  href="{% url 'core:product-detail' p.pid %}" class="action-btn"><i class="fi-rs-eye"></i></a>
+                            </div>
+                            <div class="product-badges product-badges-position product-badges-mrg">
+                                {% if p.old_price %}
+                                    <span class="hot">{{p.get_precentage|floatformat:0}}%</span>
+                                {% elif p.old_price > 2000 %}
+                                    <span class="hot">🔥</span>
+                                {% else %}
+                                    <span class="new">Нове</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="product-content-wrap">
+                            <div class="product-category">
+                                <a href="{% url 'core:category-product-list' cid=p.category.cid %}">{{p.category}}</a>
+                            </div>
+                            <h2><a href="{% url 'core:product-detail' pid=p.pid %}">{{ p.title|truncatechars:20 }}</a></h2>
+                            <div class="product-rate-cover">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: {{p.get_reviews_precentage}}%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> ({{p.get_reviews_count}})</span>
+                            </div>
+                            <div>
+                                {% if p.vendor %}
+                                <span class="font-small text-muted">Постачальник: <a style="color:#ff8234ee">{{ p.vendor }}</a></span>
+                                {% endif %}
+                            </div>
+                            <div class="product-card-bottom">
+                                <div class="product-price">
+                                    <span>{{ p.price }} ₴</span>
+                                    {% if p.discount %}
+                                        <span class="save-price font-md color3 ml-15">{{ p.discount }}% знижка</span>
+                                    {% endif %}
+                                    {% if p.old_price %}
+                                        <span class="old-price font-md ml-15">{{ p.old_price }} ₴</span>
+                                    {% endif %}
+                                </div>
+                                <div class="add-cart">
+                                    <button class="add add-to-cart-btn" data-index="{{ p.id }}" id="add-to-cart-btn"><i class="fi-rs-shopping-cart mr-5">В кошик</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <h1>В данний момент за таким запитом нічого не знайдено<h2>
+        {% endif %}
+        </div>
+    </div>
+</div>
+
+    <style>
+ .product-img-action-wrap {
+    height: 250px !important; /* Высота контейнера изображения */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+}
+
+.product-img img {
+    height: 100% !important; /* Растягивание изображений по высоте контейнера */
+    width: 100% !important; /* Растягивание изображений по ширине контейнера */
+    object-fit: cover !important; /* Сохранение пропорций изображения и обрезка по центру */
+}
+
+/* Стили для карточек продукта */
+.product-cart-wrap {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-content-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-content-wrap h2, .product-content-wrap .product-category, .product-content-wrap .product-rate-cover, .product-content-wrap .product-price {
+    height: 2.5em; /* Примерная высота, можно корректировать */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Стили для кнопок "В кошик" */
+.add-cart {
+    display: flex;
+    justify-content: center;
+    margin-top: 1px; /* Уменьшенный отступ сверху для кнопок */
+}
+
+.add-to-cart-btn {
+    width: 100%; /* Кнопка занимает всю ширину контейнера */
+    max-width: 130px; /* Максимальная ширина для кнопки */
+    padding: 10px; /* Отступы для кнопки */
+    background-color: #ff8234; /* Цвет фона */
+    color: #fff; /* Цвет текста */
+    border: none; /* Убираем границы */
+    cursor: pointer; /* Курсор при наведении */
+    text-align: center; /* Центрируем текст */
+    font-size: 16px; /* Размер шрифта */
+    line-height: 1.5; /* Высота строки */
+}
+
+.add-to-cart-btn i {
+    margin-right: 2px; /* Отступ для иконки */
+}
+
+/* Общее выравнивание карточек */
+.col-lg-3, .col-md-4, .col-sm-6, .col-xs-12 {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-cart-wrap {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Дополнительные стили для корректного отображения */
+.product-card-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.product-price, .add-cart {
+    width: 100%;
+    text-align: center;
+}
+
+
+
+
+</style>
+</div>

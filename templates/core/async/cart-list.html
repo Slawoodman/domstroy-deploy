@@ -1,0 +1,263 @@
+<main class="main" id="cart-list">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'core:index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Головна</a>
+                    <span></span> Магазин
+                    <span></span> Кошик
+                </div>
+            </div>
+        </div>
+        <div class="container mb-80 mt-50">
+            <div class="row">
+                <div class="col-lg-8 mb-40">
+                    <h1 class="heading-2 mb-10">Ваш кошик</h1>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="text-body">У вашому кошику <span class="text-brand">{{ cartitems.count }}</span> товарів
+                        </h6>
+                        <h6 class="text-body">
+                            <a id="clear-cart-link" class="text-muted btn-clear-cart">
+                                <i class="fi-rs-trash mr-5"></i>Очистити кошик
+                            </a>
+                        </h6>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="table-responsive shopping-summery">
+                        <table class="table table-wishlist">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th class="custome-checkbox start pl-30"></th>
+                                    <th scope="col">Товар</th>
+                                    <th scope="col">Назва</th>
+                                    <th scope="col">Ціна за одиницю</th>
+                                    <th scope="col" class="text-center">Кількість</th>
+                                    <th scope="col">Проміжний підсумок</th>
+                                    <th scope="col" class="end">Видалити</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cartitems %}
+                                <tr class="pt-30">
+                                    <td class="custome-checkbox pl-30"></td>
+                                    <td class="image product-thumbnail pt-40"><img src="{{ item.product.image.url }}" alt="#"></td>
+                                    <td class="product-des product-name">
+                                        <h6 class="mb-5"><a class="product-name mb-10 text-heading" href="">{{ item.product.title }}</a></h6>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        <h4 class="text-body">{{item.product.price|floatformat:2}} ₴</h4>
+                                    </td>
+                                    <td class="quantity text-center">
+                                        <div class="quantity-controls">
+                                            <button class="decrease-quantity btn-quantity">-</button>
+                                            <input type="number" id="quantity-input-{{ item.id }}" class="quantity-input" value="{{ item.quantity }}" min="1" data-item-id="{{ item.id }}">
+                                            <button class="increase-quantity btn-quantity">+</button>
+                                        </div>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        <h4 class="text-brand">{{item.price_sum }} ₴</h4>
+                                    </td>
+                                    <td class="action text-center" data-title="Remove">
+                                        <button class="delete-product btn-delete" data-product="{{ item.id }}">
+                                            <i class="fi-rs-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="divider-2 mb-30"></div>
+                    <div class="cart-action d-flex justify-content-between">
+                        <a class="btn" href="{% url 'core:product-list' %}"><i class="fi-rs-arrow-left mr-10"></i>Продовжити покупки</a>
+                        <a class="btn mr-10 mb-sm-15" href="{% url 'core:cart' %}"><i class="fi-rs-refresh mr-10"></i>Оновити кошик</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="border p-md-4 cart-totals ml-30">
+                        <div class="table-responsive">
+                            <table class="table no-border">
+                                <tbody>
+                                    <tr>
+                                        <td class="cart_total_label">
+                                            <h6 class="text-muted">Проміжна сума</h6>
+                                        </td>
+                                        <td class="cart_total_amount">
+                                            <h4 class="text-brand text-end">{{total_price}} ₴</h4>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="col" colspan="2">
+                                            <div class="divider-2 mt-10 mb-10"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cart_total_label">
+                                            <h6 class="text-muted">Доставка</h6>
+                                        </td>
+                                        <td class="cart_total_amount">
+                                            <h5 class="text-heading text-end">Уточнюйте у менеджера</h5>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cart_total_label">
+                                            <h6 class="text-muted">Загальна сума</h6>
+                                        </td>
+                                        <td class="cart_total_amount">
+                                            <h4 class="text-brand text-end">{{total_price}} ₴</h4>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        {% if cartitems %}
+                        <a href="{% url 'core:checkout' %}" class="btn mb-20 w-100">Перейти до оформлення заказу<i class="fi-rs-sign-out ml-15"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <style>
+       
+            /* Styles for the delete button */
+            .btn-delete {
+                border: none;
+                background: none;
+                color: #333;
+                cursor: pointer;
+                transition: transform 0.3s, color 0.3s;
+                font-size: 24px; /* Increase the size */
+                padding: 10px; /* Add padding */
+            }
+
+            /* Hover effect for the delete button */
+            .btn-delete:hover {
+                color: #ff4500; /* Orange Red */
+                transform: scale(1.1); /* Slightly enlarge the button */
+            }
+
+            /* Active state for the delete button */
+            .btn-delete:active {
+                transform: scale(0.9); /* Slightly shrink the button when clicked */
+            }
+
+            /* Add a fade-out animation when the item is being deleted */
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                to {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+            }
+
+            /* Apply the fade-out animation to the table row */
+            .tr-fade-out {
+                animation: fadeOut 0.5s forwards;
+            }
+            .text-body .btn-clear-cart {
+    transition: color 0.3s, transform 0.3s;
+    font-size: 16px !important; /* Принудительное применение размера */
+    display: inline-block !important;
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+/* Эффект при наведении */
+.text-body .btn-clear-cart:hover {
+    color: #ff4500 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Эффект при нажатии */
+.text-body .btn-clear-cart:active {
+    transform: scale(0.9) !important;
+}
+
+
+            /* Apply the fade-out animation to the table row */
+            .tr-fade-out {
+                animation: fadeOut 0.5s forwards;
+            }
+
+                .table-wishlist th, .table-wishlist td {
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            .table-wishlist th {
+                padding: 10px 15px;
+                font-weight: bold;
+            }
+
+            .table-wishlist td {
+                padding: 15px;
+            }
+
+            .image.product-thumbnail {
+                width: 100px;
+                height: auto;
+            }
+
+            .product-des {
+                text-align: left;
+            }
+
+            .quantity-controls {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .price, .action {
+                text-align: center;
+            }
+
+            .btn-quantity {
+                background-color: #FFA500; /* Orange */
+                border: 1px solid #FFA500;
+                border-radius: 4px;
+                padding: 5px 10px;
+                cursor: pointer;
+                font-size: 18px;
+                color: white;
+                transition: background-color 0.3s, color 0.3s, transform 0.2s;
+                margin: 0 5px;
+            }
+
+            .btn-quantity:hover {
+                background-color: #FF8C00; /* Dark Orange */
+                color: white;
+                transform: scale(1.1);
+            }
+
+            .btn-quantity:active {
+                background-color: #FF4500; /* Orange Red */
+                transform: scale(1.05);
+            }
+
+            .quantity-input {
+                width: 50px;
+                text-align: center;
+                border: none; /* Убирает обводку */
+                border-radius: 4px;
+                padding: 5px;
+                margin: 0 5px;
+                height: 36px; /* Ensure consistent height with buttons */
+                outline: none; /* Убирает обводку при фокусе */
+                background-color: #f0f0f0; /* Добавляет легкий фон для видимости */
+            }
+
+        </style>
+
+<script>
+  
+</script>
+    </main>

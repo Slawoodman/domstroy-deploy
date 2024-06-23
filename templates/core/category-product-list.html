@@ -1,0 +1,206 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+        .product-cart-wrap {
+        height: 450px; /* Установите нужную высоту для карточки */
+        display: flex;
+        flex-direction: column;
+    }
+
+    
+.product-img-action-wrap {
+    flex: 0 0 auto;
+    overflow: hidden; /* Скрывает выходящую часть изображения */
+    max-height: 200px; 
+}
+
+.product-content-wrap {
+    max-height: 200px;
+    flex: 1 1 auto; /* Контент занимает оставшееся место */
+    display: flex;
+    flex-direction: column;
+     padding: 1rem;
+}
+
+.product-content-wrap > * {
+    flex: 0 0 auto; /* Элементы контента не растягиваются */
+}
+
+.product-card-bottom {
+    margin-top: auto; /* Кнопка прижимается к низу карточки */
+}
+
+.product-button .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    line-height: 1;
+    padding: 0 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-button .btn i {
+    margin-right: 5px;
+}
+
+ 
+
+.widget-category-2 ul li a {
+    display: flex;
+    align-items: center;
+}
+
+.widget-category-2 ul li a img {
+    width: 50px; /* Задаем ширину изображения */
+    height: 50px; /* Задаем высоту изображения */
+    object-fit: cover; /* Сохраняем пропорции изображения */
+    margin-right: 10px; /* Добавляем отступ между изображением и текстом */
+}
+
+
+.widget-category-2 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.widget-category-2 ul li {
+    margin-bottom: 10px;
+}
+
+.widget-category-2 ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.widget-category-2 ul li span.count {
+    margin-left: auto;
+    font-size: 12px;
+    color: #999;
+
+
+}
+
+
+</style>
+    <main class="main">
+        <div class="page-header mt-30 mb-50">
+            <div class="container">
+                <div class="archive-header">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3">
+                            <h1 class="mb-15">{{category.name}}</h1>
+                            <div class="breadcrumb">
+                                <a href="{% url 'core:index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Головна</a>
+                                <span style="color: #fcfcfcbd;">Магазин</span>
+                                <span style="color: #fcfcfcbd;">{{category.name}}</span> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mb-30">
+            <div class="row">
+                <div class="col-12">
+                    <div class="shop-product-fillter">
+                        <div class="totall-product">
+                            <p>Знайдено <strong class="text-brand">{{total_count}}</strong> товарів для тебе!</p>
+                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row product-grid">
+                        {% for p in products %}
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                            <div class="product-cart-wrap mb-30">
+                                <div class="product-img-action-wrap">
+                                    <div class="product-img product-img-zoom">
+                                        <a href="{% url 'core:product-detail' p.pid %}">
+                                            <img class="default-img" src="{{ p.image.url }}" alt="" style="height: 280px; width: 100%; object-fit: cover;"   />
+                                            <img class="hover-img" src="{{ p.image.url }}" alt=""  style="height: 280px; width: 100%; object-fit: cover;"  />
+
+                                        </a>
+                                    </div>
+                                    <div class="product-action-1">
+                                        <a aria-label="Додати до бажаного"  class="action-btn add-to-wishlist" data-product-item="{{p.id}}"><i class="fi-rs-heart"></i></a>
+                                        <a aria-label="Переглянути" href="{% url 'core:product-detail' p.pid %}" class="action-btn"><i class="fi-rs-eye"></i></a>
+                                    </div>
+                                    <div class="product-badges product-badges-position product-badges-mrg">
+                                        {% if p.old_price %}
+                                            <span class="hot">-{{p.get_precentage|floatformat:0}}%</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="product-content-wrap  text-center">
+                                    <div class="product-category text-truncate">
+                                        <a href="{% url 'core:category-product-list' cid=p.category.cid %}">{{ p.category.title }}</a>
+                                    </div>
+                                    <h2 class="text-truncate"><a href="{% url 'core:product-detail' pid=p.pid %}">{{ p.title }}</a></h2>
+                                    <div class="product-rate-cover">
+                                        <div class="product-rate d-inline-block">
+                                            <div class="product-rating" style="width: {{p.get_reviews_precentage}}%"></div>
+                                        </div>
+                                        <span class="font-small ml-5 text-muted"> ({{p.get_reviews_count}})</span>
+                                    </div>
+                                    <div>
+                                        {% if p.vendor %}
+                                            <span class="font-small text-muted">Постачальник: <a style="color:#ff8234ee">{{p.vendor.title}}</a></span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="product-card-bottom">
+                                        <div class="product-price">
+                                                         <span>{{ p.price }} ₴</span>
+                    {% if p.discount %}
+                        <span class="save-price font-md color3 ml-15">{{ p.discount }}% знижка</span>
+                    {% endif %}
+                    {% if p.old_price %}
+                        <span class="old-price font-md ml-15">{{ p.old_price }} ₴</span>
+                    {% endif %}
+                                        </div>
+                                        <div class="add-cart">
+                                            <div class="product-button">
+                                                <button class="add add-to-cart-btn btn btn-primary" data-index="{{ product.id }}" style="width: 100%;"><i class="fi-rs-shopping-cart mr-5"></i>В кошик</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                     <div class="pagination-area mt-15 mb-sm-5 mb-lg-0">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-start">
+                                {% if products.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1"><i class="fi-rs-arrow-small-left"></i></a>
+                                </li>
+                                {% endif %}
+                                {% for num in products.paginator.page_range %}
+                                <li class="page-item {% if products.number == num %}active{% endif %}">
+                                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                </li>
+                                {% endfor %}
+                                {% if products.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ products.next_page_number }}"><i class="fi-rs-arrow-small-right"></i></a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+   
+{% endblock content %}

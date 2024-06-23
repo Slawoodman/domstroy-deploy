@@ -1,0 +1,36 @@
+                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Деталі облікового запису</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <p>Вже маєте обліковий запис? <a href="{% url 'userauths:sign-in' %}">Увійдіть замість цього!</a></p>
+                                                <form method="post" name="enq">
+    {% csrf_token %}
+    <div class="row">
+        <div class="form-group col-md-12">
+            <label>{{ form.full_name.label }} <span class="required">*</span></label>
+            <input required class="form-control" name="{{ form.full_name.html_name }}" type="text" value="{{ form.full_name.value }}" />
+        </div>
+        <div class="form-group col-md-12">
+            <label>{{ form.telephone.label }} <span class="required">*</span></label>
+            <input required class="form-control" name="{{ form.telephone.html_name }}" type="telephone" value="{{ form.telephone.value }}" />
+        </div>
+        <div class="form-group col-md-12">
+            <label>{{ form.current_password.label }} <span class="required">*</span></label>
+            <input required class="form-control" name="{{ form.current_password.html_name }}" type="password" />
+        </div>
+        <div class="form-group col-md-12">
+            <label>{{ form.new_password.label }} <span class="required">*</span></label>
+            <input required class="form-control" name="{{ form.new_password.html_name }}" type="password" />
+        </div>
+        <div class="form-group col-md-12">
+            <label>{{ form.confirm_password.label }} <span class="required">*</span></label>
+            <input required class="form-control" name="{{ form.confirm_password.html_name }}" type="password" />
+        </div>
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-fill-out submit font-weight-bold" name="submit" value="Submit">Зберегти зміни</button>
+        </div>
+    </div>
+</form>
+</div>

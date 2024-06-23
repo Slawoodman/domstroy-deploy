@@ -1,0 +1,233 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<style>
+    
+    </style>
+    <main class="main">
+        <div class="container mb-30">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-4-5">
+
+                    <section class="home-slider position-relative mb-30">
+                        <div class="home-slide-cover mt-30">
+                            <div class="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
+                                <a href="link-to-your-page">
+                                    <div class="single-hero-slider single-animation-wrap" style="background-image: url('/static/assets/imgs/slider/Home1.png')">
+                                        <div class="slider-content">
+                                            <!-- Content of the first slider -->
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <a href="link-to-your-page">
+                                    <div class="single-hero-slider single-animation-wrap" style="background-image: url('/static/assets/imgs/slider/Brick1.png')">
+                                        <div class="slider-content">
+                                            <!-- Content of the second slider -->
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                            </div>
+                            <div class="slider-arrow hero-slider-1-arrow"></div>
+                        </div>
+                    </section>
+
+                    <section class="product-tabs section-padding position-relative">
+                        <div class="section-title style-2" >
+                            <h3>Популярні товари</h3>
+                            <ul class="nav nav-tabs links" id="myTab" role="tablist" >
+                                <li class="nav-item" role="presentation" >
+                                    <button class="nav-link filter-index active" data-category-id="all" data-bs-toggle="tab" data-bs-target="#tab-all" type="button" role="tab" aria-controls="tab-all" aria-selected="true">Усі</button>
+                                </li>
+                                {% for i in categories|slice:3 %}
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link filter-index" data-category-id="{{ i.id }}" data-bs-toggle="tab" data-bs-target="#tab-{{ i.id }}" type="button" role="tab" aria-controls="tab-{{ i.id }}" aria-selected="false">{{ i.name }}</button>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% include 'core/async/product-index.html' with products=products %}
+                    </section>
+
+                    
+                </div>
+
+                <div class="col-lg-1-5 primary-sidebar sticky-sidebar pt-30">
+                    <div class="sidebar-widget widget-category-2 mb-30">
+                        <h5 class="section-title style-1 mb-30">Категорія</h5>
+                        <ul class="category-list">
+                            {% for cat in categories|slice:5 %}
+                            <li>
+                                <a href="{% url 'core:category-product-list' cat.cid %}"> 
+                                    <img src="{{cat.image.url}}" alt="" class="category-image" />{{cat.name}} </a><span class="count">
+                                        {{cat.product_set.all.count }}
+                                </span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <style>
+                  .category-list {
+                    list-style: none;
+                    padding: 0;
+                }
+
+                .category-item {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 15px;
+                }
+
+                .category-link {
+                    display: flex;
+                    align-items: center;
+                    text-decoration: none;
+                    color: #333;
+                }
+
+                .category-image {
+                    width: 40px;
+                    height: 40px;
+                    object-fit: cover;
+                     
+                    margin-right: 15px;
+                }
+
+                .category-name {
+                    font-weight: bold;
+                }
+
+                .category-count {
+                    margin-left: auto;
+                    background-color: #eee;
+                    padding: 5px 10px;
+                    border-radius: 20px;
+                    font-size: 0.8em;
+                    }
+                    </style>
+
+                    <div class="sidebar-widget price_range range mb-30">
+                        <h5 class="section-title style-1 mb-30">Фільтрувати за ціною</h5>
+                        <div class="price-filter mb-20">
+                            <div class="price-filter-inner d-flex align-items-center">
+                                <div id="slider-range" class="mb-20 mr-2"></div>
+                                <div class="d-flex flex-column justify-content-center flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="caption flex-shrink-0">Від: <strong id="slider-range-value1" class="text-brand flex-shrink-0">₴ {{ min_max_price.price__min|floatformat:2 }}</strong></div>
+                                        <div class="d-flex align-items-center flex-shrink-0">
+                                            <input type="range" name="ranDge" value="{{ min_max_price.price__min|floatformat:2 }}" class="slider-range flex-shrink-0" id="range" min="{{ min_max_price.price__min }}" max="{{ min_max_price.price__max }}" oninput="updateSlider(this.value, 'slider-range-value1')">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <div class="caption flex-shrink-0">До: <strong id="slider-range-value2" class="text-brand flex-shrink-0">₴ {{ min_max_price.price__max|floatformat:2 }}</strong></div>
+                                        <div class="d-flex align-items-center flex-shrink-0">
+                                            <input type="range" name="ranDge" value="{{ min_max_price.price__max|floatformat:2 }}" class="slider-range flex-shrink-0" id="range2" min="{{ min_max_price.price__min }}" max="{{ min_max_price.price__max }}" oninput="updateSlider(this.value, 'slider-range-value2')">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                        <style>
+                            
+                        </style>
+                        <script>
+                            
+                        </script>
+                        <div class="list-group">
+                            <div class="list-group-item mb-10 mt-10">
+                                <label class="fw-900 mt-15">Стан товару</label>
+                                <div class="custome-checkbox">
+                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="NEW" />
+                                    <label class="form-check-label" for="exampleCheckbox11"><span>Новий  ({{new_prod_count}})</span></label>
+                                    <br />
+                                    <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox31" value="USED" />
+                                    <label class="form-check-label" for="exampleCheckbox31"><span>Вжитий  ({{old_prod_count}})</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" id="filterButton" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Фільтр</button>
+                    </div>
+
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function updateSlider(value, targetId) 
+        {
+            document.getElementById(targetId).innerText = "$" + value;
+        }
+    </script>
+
+    <script>
+        $(".ajax-load").hide();
+        $(document).ready(function(){
+            // Установка изначальных значений для минимального и максимального прайса
+            var minPriceInitial = parseFloat('{{ min_max_price.price__min|floatformat:2 }}');
+            var maxPriceInitial = parseFloat('{{ min_max_price.price__max|floatformat:2 }}');
+
+            // Установка начальных значений на элементы
+            $('#slider-range-value1').text('$' + minPriceInitial.toFixed(2));
+            $('#slider-range-value2').text('$' + maxPriceInitial.toFixed(2));
+
+            // Обработчик клика по категории
+            $(".filter-index").on('click', function(){
+                var categoryId = $(this).data('category-id');
+                var minPrice = parseFloat($('#slider-range-value1').text().replace(/[^\d.-]/g, '')); // Remove currency symbol
+                var maxPrice = parseFloat($('#slider-range-value2').text().replace(/[^\d.-]/g, '')); // Use .text() to get the value from the element
+                var productStatusNew = $('#exampleCheckbox11').is(':checked');
+                var productStatusUsed = $('#exampleCheckbox31').is(':checked');
+
+                filterData(categoryId, minPrice, maxPrice, productStatusNew, productStatusUsed);
+            });
+
+            // Обработчик клика по кнопке фильтрации
+            $("#filterButton").on('click', function(){
+                var categoryId = $(".filter-index.active").data('category-id');
+                var minPrice = parseFloat($('#slider-range-value1').text().replace(/[^\d.-]/g, '')); // Remove currency symbol
+                var maxPrice = parseFloat($('#slider-range-value2').text().replace(/[^\d.-]/g, '')); // Use .text() to get the value from the element
+                var productStatusNew = $('#exampleCheckbox11').is(':checked');
+                var productStatusUsed = $('#exampleCheckbox31').is(':checked');
+
+                filterData(categoryId, minPrice, maxPrice, productStatusNew, productStatusUsed);
+            });
+
+            // Функция для отправки AJAX-запроса на фильтрацию
+            function filterData(categoryId, minPrice, maxPrice, productStatusNew, productStatusUsed) {
+                $.ajax({
+                    url: '/filter-data',
+                    method: 'post',
+                    data: {
+                        category_id: categoryId,
+                        min_price: minPrice,
+                        max_price: maxPrice,
+                        product_status: productStatusNew ? 'NEW' : (productStatusUsed ? 'USED' : ''),
+                    },
+                    dataType: 'json',
+                    headers: {
+                        'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()
+                    },
+                    beforeSend: function(){
+                        $(".ajax-load").html('Loading...');
+                    },
+                    success:function(res){
+                        console.log(res);
+                        $(".ajax-load").hide();
+                        $("#filteredProducts").html(res.data);
+                    }
+                });
+            }
+        });
+    </script>
+
+{% endblock content %}

@@ -1,0 +1,36 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'core/async/wishlist-list.html' with w=w %}
+{% block extra_scripts %}
+<script>
+    $(document).on("click", ".delete-wishlist-product", function() {
+        const csrfToken = "{{ csrf_token }}";
+        let wishlist_id = $(this).attr("data-wishlist-product");
+        console.log("wishlist id is:", wishlist_id);
+        $.ajax({
+            url: "/remove-from-wishlist/",
+            type: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            },
+            data: {
+                'wishlist_item_id': wishlist_id
+            },
+            dataType: "json",
+            beforeSend: function() {
+                console.log("Deleting product from wishlist...");
+            },
+            success: function(response) {
+                $("#wishlist-list").html(response.data);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.error('Помилка видалення продукту з списку бажаного: ', errorThrown);
+            }
+        });
+    });
+</script>
+{% endblock extra_scripts %}
+{% endblock content %}

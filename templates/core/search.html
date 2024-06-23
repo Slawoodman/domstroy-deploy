@@ -1,0 +1,110 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+    <main class="main">
+        <div class="page-header mt-30 mb-50">
+            <div class="container">
+                <div class="archive-header">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3">
+                            {% if query %}
+                            <h1 class="mb-15">{{query}}</h1>
+                            {% else %}
+                            <h3 class="mb-15">Нічого не знайдено</h3>
+                            {% endif %}
+                            <div class="breadcrumb">
+                                <a href="index.html" rel="nofollow"><i class="fi-rs-home mr-5"></i>Головна</a>
+                                <span></span> Магазин <span></span> {{query}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <style>
+                .product-cart-wrap {
+        height: 450px; /* Установите нужную высоту для карточки */
+        display: flex;
+        flex-direction: column;
+    }
+
+    
+.product-img-action-wrap {
+    flex: 0 0 auto;
+    overflow: hidden; /* Скрывает выходящую часть изображения */
+    max-height: 200px; 
+}
+
+.product-content-wrap {
+    max-height: 200px;
+    flex: 1 1 auto; /* Контент занимает оставшееся место */
+    display: flex;
+    flex-direction: column;
+     padding: 1rem;
+}
+
+.product-content-wrap > * {
+    flex: 0 0 auto; /* Элементы контента не растягиваются */
+}
+
+.product-card-bottom {
+    margin-top: auto; /* Кнопка прижимается к низу карточки */
+}
+
+.product-button .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    line-height: 1;
+    padding: 0 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-button .btn i {
+    margin-right: 5px;
+}
+
+ 
+
+.widget-category-2 ul li a {
+    display: flex;
+    align-items: center;
+}
+
+.widget-category-2 ul li a img {
+    width: 50px; /* Задаем ширину изображения */
+    height: 50px; /* Задаем высоту изображения */
+    object-fit: cover; /* Сохраняем пропорции изображения */
+    margin-right: 10px; /* Добавляем отступ между изображением и текстом */
+}
+
+
+.widget-category-2 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.widget-category-2 ul li {
+    margin-bottom: 10px;
+}
+
+.widget-category-2 ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.widget-category-2 ul li span.count {
+    margin-left: auto;
+    font-size: 12px;
+    color: #999;
+
+
+}
+        </style>
+    </main>
+{% endblock content %}

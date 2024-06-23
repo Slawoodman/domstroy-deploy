@@ -1,0 +1,77 @@
+{% extends 'useradmin/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{{ form.media }}
+{% block content %}
+<head>
+    <style>
+        select {
+            appearance: none;
+            outline: 0;
+            background: rgba(240, 240, 240, 0.548);
+            background-image: none;
+            width: 100%;
+            color: black;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+        }
+        #id_category {
+            position: relative;
+            display: block;
+            width: 15em;
+            font-family: poppins;
+            border: none;
+            height: 3em;
+            line-height: 3;
+            overflow: hidden;
+            border-radius: .25em;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<section class="content-main">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Додати новий продукт</h2>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Основне</h4>
+                    </div>
+                    <div class="card-body">
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ form.errors }}</strong>
+                        </div>
+                        {% endif %}
+                        {{ form.as_p }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Медіа</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="input-upload">
+                            <img src="{% static 'assets2/imgs/theme/upload.svg' %}" alt="" />
+                            {{ form.image }}
+                        </div>
+                    </div>
+                </div>
+                <button class="btn mt-3 btn-md rounded font-sm hover-up" type="submit">Створити продукт</button>
+            </div>
+        </div>
+    </form>
+</section>
+{% endblock content %}

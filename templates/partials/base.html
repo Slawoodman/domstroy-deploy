@@ -1,0 +1,986 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>DomStory</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg" />
+
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <style>
+      
+
+        .main-categori-wrap {
+    position: relative;
+}
+
+.categories-dropdown-wrap {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 999;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-row {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.category-row ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+    max-width: 50%;
+}
+
+.category-row ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    padding: 10px;
+     
+    border-radius: 5px;
+    width: 200px; 
+    height: 60px; 
+    box-sizing: border-box; 
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap;
+}
+
+.category-row ul li a img {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.more_categories {
+    text-align: center;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.more_categories .icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.animated-link {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+.animated-link:hover {
+    color: #D35400;
+    text-decoration: underline;
+}
+
+.animated-svg {
+    transition: fill 0.3s, transform 0.3s;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+.animated-link:hover .animated-svg {
+    fill: #460913;
+    transform: scale(1.1);
+}
+
+.shopping-cart-button a {
+    display: inline-block;
+    width: 600px;
+    height: 40px; 
+    text-align: center;
+    line-height: 40px; 
+    margin-right: 10px; 
+    text-decoration: none; 
+    font-size: 14px;
+    color: #333; 
+    border: 1px solid #333;
+    border-radius: 5px; 
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+.shopping-cart-button a:hover {
+    background-color: #333; 
+    color: #fff; 
+}
+
+
+.header-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    margin-right: 20px   ;  /* Adjust as needed */
+}
+
+.warehouse-info {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border: 1px solid #ddd;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.header-info ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .header-info li {
+        margin-bottom: 20px; /* Увеличенный отступ снизу */
+    }
+
+    .header-info a {
+        text-decoration: none;
+        font-size: 16px;
+        white-space: nowrap;
+        display: inline-block;
+        transition: transform 0.3s ease; /* Плавный переход для анимации */
+        transform-origin: left center; /* Задаем точку трансформации слева */
+    }
+
+    .header-info a:hover {
+        transform: scale(1.1); /* Увеличиваем размер текста на 10% при наведении */
+        color: #FFA500;
+    }
+
+    
+    </style>
+</head>
+
+<body>
+
+
+    <header class="header-area header-style-1 header-height-2">
+        <div class="mobile-promotion">
+            <span>Велике відкриття, знижка до <strong>15%</strong> на всі товари. Залишилося лише <strong>3 дні</strong></span>
+        </div>
+        <div class="main-header">
+            <div class="header-top header-top-ptb-1 d-none d-lg-block">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3 col-lg-4">
+                            <div class="header-info">
+                                <ul>
+                                    <li><a href="{% url 'core:about_us' %}">Про нас</a></li>
+                                    <li><a href="{% url 'core:dashboard' %}">Мій обліковий запис</a></li>
+                                    <li><a href="{% url 'core:wishlist' %}">Список бажань</a></li>
+                                    <li><a href="{% url 'core:contact' %}#testimonials">Відгуки</a></li>
+                                    <li><a href="{% url 'core:purchase_guide' %}">Доставка</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-6 col-lg-4">
+                            <div class="text-center">
+                                <div id="news-flash" class="d-inline-block">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4">
+                            <div class="header-info header-info-right">
+                                <ul>
+                                    <li>Потрібна допомога? Телефонуйте: <strong class="text-brand"> +1800 900</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container back">
+                <div class="row">
+                    <div class="col-md-8 order-md-2">
+                        <div class="warehouse-info" style="background-color: #f189006e; padding: 8px; border: 1px solid #ddd; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; border-radius: 50% 10% / 10% 50%;">
+                            <div class="warehouses-container" style="flex: 1; min-width: 300px;">                                
+                                <div class="warehouses" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                                    <div class="warehouse" style="flex: 0 0 48%; margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">
+                                        <h4 style="color: #333; font-weight: bold;">Склад №1</h4>
+                                        <p style="color: #666;">
+                                            <a href="https://www.google.com/maps/place/%D0%93%D0%BB%D0%B0%D0%B2%D0%94%D0%BE%D0%BC%D1%81%D1%82%D1%80%D0%BE%D0%B9/@47.8434973,35.2376121,16z/data=!4m6!3m5!1s0x40dc5da7749bf7c7:0xe762db09c0cd2b7c!8m2!3d47.8436053!4d35.2388781!16s%2Fg%2F11gbnmwr9x?entry=ttu" class="animated-link">
+                                                <span style="color: #000000; font-weight: bold;">Адреса:</span> Магістральна вулиця, 98, Запоріжжя
+
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="animated-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </a>
+                                        </p>
+                                        <p style="color: #666;">
+                                            <span style="color: #D35400; font-weight: bold;">Телефон:</span> +380 66 569 18 54 
+                                            <a href="https://t.me/Nicenko_Vadim" class="animated-link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="animated-svg" x="0px" y="0px" width="25" height="26" viewBox="0 0 50 50" style="fill: #D35400;"><path d="M 25 2 C 12.309288 2 2 12.309297 2 25 C 2 37.690703 12.309288 48 25 48 C 37.690712 48 48 37.690703 48 25 C 48 12.309297 37.690712 2 25 2 z M 25 4 C 36.609833 4 46 13.390175 46 25 C 46 36.609825 36.609833 46 25 46 C 13.390167 46 4 36.609825 4 25 C 4 13.390175 13.390167 4 25 4 z M 34.087891 14.035156 C 33.403891 14.035156 32.635328 14.193578 31.736328 14.517578 C 30.340328 15.020578 13.920734 21.992156 12.052734 22.785156 C 10.984734 23.239156 8.9960938 24.083656 8.9960938 26.097656 C 8.9960938 27.432656 9.7783594 28.3875 11.318359 28.9375 C 12.146359 29.2325 14.112906 29.828578 15.253906 30.142578 C 15.737906 30.275578 16.25225 30.34375 16.78125 30.34375 C 17.81625 30.34375 18.857828 30.085859 19.673828 29.630859 C 19.666828 29.798859 19.671406 29.968672 19.691406 30.138672 C 19.814406 31.188672 20.461875 32.17625 21.421875 32.78125 C 22.049875 33.17725 27.179312 36.614156 27.945312 37.160156 C 29.021313 37.929156 30.210813 38.335938 31.382812 38.335938 C 33.622813 38.335938 34.374328 36.023109 34.736328 34.912109 C 35.261328 33.299109 37.227219 20.182141 37.449219 17.869141 C 37.600219 16.284141 36.939641 14.978953 35.681641 14.376953 C 35.210641 14.149953 34.672891 14.035156 34.087891 14.035156 z M 34.087891 16.035156 C 34.362891 16.035156 34.608406 16.080641 34.816406 16.181641 C 35.289406 16.408641 35.530031 16.914688 35.457031 17.679688 C 35.215031 20.202687 33.253938 33.008969 32.835938 34.292969 C 32.477938 35.390969 32.100813 36.335938 31.382812 36.335938 C 30.664813 36.335938 29.880422 36.08425 29.107422 35.53125 C 28.334422 34.97925 23.201281 31.536891 22.488281 31.087891 C 21.863281 30.693891 21.201813 29.711719 22.132812 28.761719 C 22.899812 27.979719 28.717844 22.332938 29.214844 21.835938 C 29.584844 21.464938 29.411828 21.017578 29.048828 21.017578 C 28.923828 21.017578 28.774141 21.070266 28.619141 21.197266 C 28.011141 21.694266 19.534781 27.366266 18.800781 27.822266 C 18.314781 28.124266 17.56225 28.341797 16.78125 28.341797 C 16.44825 28.341797 16.111109 28.301891 15.787109 28.212891 C 14.659109 27.901891 12.750187 27.322734 11.992188 27.052734 C 11.263188 26.792734 10.998047 26.543656 10.998047 26.097656 C 10.998047 25.463656 11.892938 25.026 12.835938 24.625 C 13.831938 24.202 31.066062 16.883437 32.414062 16.398438 C 33.038062 16.172438 33.608891 16.035156 34.087891 16.035156 z"></path></svg>
+                                            </a>
+                                        </p>
+                                    </div>
+                                    <div class="warehouse" style="flex: 0 0 48%; margin-bottom: 20px; font-family: 'Montserrat', sans-serif;">
+                                        <h4 style="color: #333; font-weight: bold;">Склад №2</h4>
+                                        <p style="color: #555;">
+                                            <a href="https://www.google.com/maps/place/%D0%93%D0%BB%D0%B0%D0%B2%D0%94%D0%BE%D0%BC%D1%81%D1%82%D1%80%D0%BE%D0%B9/@47.8434973,35.2376121,16z/data=!4m6!3m5!1s0x40dc5da7749bf7c7:0xe762db09c0cd2b7c!8m2!3d47.8436053!4d35.2388781!16s%2Fg%2F11gbnmwr9x?entry=ttu" class="animated-link">
+                                                <span style="color: #D35400; font-weight: bold;">Адреса:</span> Червоногірська вулиця, 2г, Запоріжжя
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="animated-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                                            </a>
+                                        </p>
+                                        <p style="color: #666;">
+                                            <span style="color: #D35400; font-weight: bold;">Телефон:</span> +380 66 569 18 54 
+                                            <a href="https://t.me/Nicenko_Vadim" class="animated-link">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="animated-svg" x="0px" y="0px" width="25" height="26" viewBox="0 0 50 50" style="fill: #D35400;"><path d="M 25 2 C 12.309288 2 2 12.309297 2 25 C 2 37.690703 12.309288 48 25 48 C 37.690712 48 48 37.690703 48 25 C 48 12.309297 37.690712 2 25 2 z M 25 4 C 36.609833 4 46 13.390175 46 25 C 46 36.609825 36.609833 46 25 46 C 13.390167 46 4 36.609825 4 25 C 4 13.390175 13.390167 4 25 4 z M 34.087891 14.035156 C 33.403891 14.035156 32.635328 14.193578 31.736328 14.517578 C 30.340328 15.020578 13.920734 21.992156 12.052734 22.785156 C 10.984734 23.239156 8.9960938 24.083656 8.9960938 26.097656 C 8.9960938 27.432656 9.7783594 28.3875 11.318359 28.9375 C 12.146359 29.2325 14.112906 29.828578 15.253906 30.142578 C 15.737906 30.275578 16.25225 30.34375 16.78125 30.34375 C 17.81625 30.34375 18.857828 30.085859 19.673828 29.630859 C 19.666828 29.798859 19.671406 29.968672 19.691406 30.138672 C 19.814406 31.188672 20.461875 32.17625 21.421875 32.78125 C 22.049875 33.17725 27.179312 36.614156 27.945312 37.160156 C 29.021313 37.929156 30.210813 38.335938 31.382812 38.335938 C 33.622813 38.335938 34.374328 36.023109 34.736328 34.912109 C 35.261328 33.299109 37.227219 20.182141 37.449219 17.869141 C 37.600219 16.284141 36.939641 14.978953 35.681641 14.376953 C 35.210641 14.149953 34.672891 14.035156 34.087891 14.035156 z M 34.087891 16.035156 C 34.362891 16.035156 34.608406 16.080641 34.816406 16.181641 C 35.289406 16.408641 35.530031 16.914688 35.457031 17.679688 C 35.215031 20.202687 33.253938 33.008969 32.835938 34.292969 C 32.477938 35.390969 32.100813 36.335938 31.382812 36.335938 C 30.664813 36.335938 29.880422 36.08425 29.107422 35.53125 C 28.334422 34.97925 23.201281 31.536891 22.488281 31.087891 C 21.863281 30.693891 21.201813 29.711719 22.132812 28.761719 C 22.899812 27.979719 28.717844 22.332938 29.214844 21.835938 C 29.584844 21.464938 29.411828 21.017578 29.048828 21.017578 C 28.923828 21.017578 28.774141 21.070266 28.619141 21.197266 C 28.011141 21.694266 19.534781 27.366266 18.800781 27.822266 C 18.314781 28.124266 17.56225 28.341797 16.78125 28.341797 C 16.44825 28.341797 16.111109 28.301891 15.787109 28.212891 C 14.659109 27.901891 12.750187 27.322734 11.992188 27.052734 C 11.263188 26.792734 10.998047 26.543656 10.998047 26.097656 C 10.998047 25.463656 11.892938 25.026 12.835938 24.625 C 13.831938 24.202 31.066062 16.883437 32.414062 16.398438 C 33.038062 16.172438 33.608891 16.035156 34.087891 16.035156 z"></path></svg>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 order-md-1  ">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <!-- Button -->
+                            <div class="main-categori-wrap d-none d-lg-block">
+                                <a class="categories-button-active" href="#">
+                                    <span class="fi-rs-apps"></span>
+                                    <span class="et">Перегляд</span> категорій
+                                    <i class="fi-rs-angle-down"></i>
+                                </a>
+                                <div class="categories-dropdown-wrap categories-dropdown-active-large font-heading">
+                                    {% for c in cat_meny|slice:"3" %}
+                                    <div class="category-row d-flex">
+                                        <ul>
+                                            <li>
+                                                <a href="{% url 'core:category-product-list' cid=c.0.cid %}">
+                                                    <img src="{{ c.0.image.url }}" alt="{{ c.0.name }}" />
+                                                    {{ c.0.name }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% if c.1 %}
+                                        <ul>
+                                            <li>
+                                                <a href="{% url 'core:category-product-list' cid=c.1.cid %}">
+                                                    <img src="{{ c.1.image.url }}" alt="{{ c.1.name }}" />
+                                                    {{ c.1.name }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
+                                    <div class="more_slide_open" style="display: none;">
+                                        {% for cat in cat_meny|slice:"3:" %}
+                                        <div class="category-row d-flex">
+                                            <ul>
+                                                <li>
+                                                    <a href="{% url 'core:category-product-list' cid=cat.0.cid %}">
+                                                        <img src="{{ cat.0.image.url }}" alt="{{ cat.0.name }}" />
+                                                        {{ cat.0.name }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            {% if cat.1 %}
+                                            <ul>
+                                                <li>
+                                                    <a href="{% url 'core:category-product-list' cid=cat.1.cid %}">
+                                                        <img src="{{ cat.1.image.url }}" alt="{{ cat.1.name }}" />
+                                                        {{ cat.1.name }}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            {% endif %}
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% if cat_meny|slice:"3:" %}
+                                    <div class="more_categories">
+                                        <span class="icon"></span>
+                                        <span class="heading-sm-1">Показати більше...</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Logo -->
+                            <div class="logo text-center">
+                                <a href="{% url 'core:index' %}">
+                                    <img src="{% static 'assets/imgs/theme/LogoGlav.jpg' %}" alt="лого" style="max-width: 100%; height: auto;" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+<style>
+   @media screen and (max-width: 768px) {
+    .logo {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+    .order-md-2 {
+        order: 1;
+    }
+    .order-md-1 {
+        order: 2;
+    }
+    .warehouses-container {
+        min-width: 100%;
+    }
+    .warehouse {
+        flex: 0 0 100% !important;
+    }
+}
+</style>
+         </div>
+
+        <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
+            <div class="container">
+                <div class="header-wrap">
+                    <!-- <div class="logo logo-width-1">
+                        <a href="{% url 'core:index' %}"><img src="{% static 'assets/imgs/theme/LogoGlav.jpg' %}" alt="лого" /></a>
+                    </div> -->
+                    
+                    <div class="header-right">
+                        <div class="search-style-2">
+                            <form action="{% url 'core:search' %}" method="GET">
+                                <input type="text" placeholder="Пошук товарів..." name="q" />
+                            </form>
+                        </div>
+                        <div class="header-action-right">
+                            <div class="header-action-2">
+                                <div class="header-action-icon-2">
+                                    <a href="{% url 'core:wishlist' %}">
+                                        <img class="svgInject" alt="Серце" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
+                                        {% if request.user.is_authenticated %}
+                                        <span class="pro-count blue">{{ wishlist.count }}</span>
+                                        {% else %}
+                                        <span class="pro-count blue">0</span>
+                                        {% endif %}
+                                    </a>
+                                    <a href="{% url 'core:wishlist' %}"><span class="lable">Список бажань</span></a>
+                                </div>
+                                <div class="header-action-icon-2">
+                                    <a class="mini-cart-icon" href="{% url 'core:cart' %}">
+                                        <img alt="Кошик" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
+                                        {% if cart_items %}
+                                            <span class="pro-count blue cart-items-count">{{  cart_items.count }}</span>
+                                        {% else %}
+                                            <span class="pro-count blue cart-items-count">0</span>
+                                        {% endif %}
+                                        {% if cart_items %}
+                                            <span class="pro-count blue cart-items-count">{{  cart_items.count }}</span>
+                                        {% else %}
+                                            <span class="pro-count blue cart-items-count">0</span>
+                                        {% endif %}
+                                    </a>
+                                    <a href="{% url 'core:cart' %}"><span class="lable">Кошик</span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                        <div class="shopping-cart-footer">
+                                            <div class="shopping-cart-button">
+                                                <a href="{% url 'core:cart' %}" class="outline">Переглянути кошик</a>
+                                                <a href="{% url 'core:checkout' %}">Оформити замовлення</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="header-action-icon-2">
+                                    <a href="{% url 'core:dashboard' %}">
+                                        <img class="svgInject" alt="Людина" src="{% static 'assets/imgs/theme/icons/icon-user.svg' %}" />
+                                    </a>
+                                    <a href="{% url 'core:dashboard' %}"><span class="lable ml-0">Обліковий запис</span></a>
+                                    <div class="cart-dropdown-wrap cart-dropdown-hm2 account-dropdown">
+                                        <ul>
+                                            {% if request.user.is_authenticated %}
+                                            <li><a href="{% url 'core:dashboard' %}"><i class="fi fi-rs-user mr-10"></i>Мій обліковий запис</a></li>
+                                            
+                                            <li><a href="{% url 'useradmin:dashboard' %}"><i class="fi fi-rs-user mr-10"></i>Панель адміністратора</a></li>
+                                            
+                                            <li><a href="{% url 'core:wishlist' %}"><i class="fi fi-rs-heart mr-10"></i>Мій список бажань</a></li>
+                                            <li><a href="{% url 'core:dashboard' %}"><i class="fi fi-rs-settings-sliders mr-10"></i>Налаштування</a></li>
+                                            <li><a href="{% url 'userauths:sign-out' %}"><i class="fi fi-rs-sign-out mr-10"></i>Вийти</a></li>
+                                            {% else %}
+                                            <li><a href="{% url 'userauths:sign-in' %}"><i class="fi fi-rs-sign-in mr-10"></i>Увійти</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-bottom header-bottom-bg-color sticky-bar">
+            <div class="container">
+                <div class="header-wrap header-space-between position-relative">
+                    <!-- <div class="logo logo-width-1 d-block d-lg-none">
+                        <a href="{% url 'core:index' %}"><img src="{% static 'assets/imgs/theme/LogoGlav.jpg' %}" alt="лого" /></a>
+                    </div> -->
+                    
+                    
+                    <div class="header-nav d-none d-lg-flex">
+                        <div class="main-categori-wrap d-none d-lg-block">
+                            <!-- <a class="categories-button-active" href="#">
+                                <span class="fi-rs-apps"></span>
+                                <span class="et">Перегляд</span> категорій
+                                <i class="fi-rs-angle-down"></i>
+                            </a> -->
+                            <div class="categories-dropdown-wrap categories-dropdown-active-large font-heading">
+                                {% for c in cat_meny|slice:"3" %}
+                                <div class="category-row d-flex">
+                                    <ul>
+                                        <li>
+                                            <a href="{% url 'core:category-product-list' cid=c.0.cid %}">
+                                                <img src="{{ c.0.image.url }}" alt="{{ c.0.name }}" />
+                                                {{ c.0.name }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    {% if c.1 %}
+                                    <ul>
+                                        <li>
+                                            <a href="{% url 'core:category-product-list' cid=c.1.cid %}">
+                                                <img src="{{ c.1.image.url }}" alt="{{ c.1.name }}" />
+                                                {{ c.1.name }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                                <div class="more_slide_open" style="display: none;">
+                                    {% for cat in cat_meny|slice:"3:" %}
+                                    <div class="category-row d-flex">
+                                        <ul>
+                                            <li>
+                                                <a href="{% url 'core:category-product-list' cid=cat.0.cid %}">
+                                                    <img src="{{ cat.0.image.url }}" alt="{{ cat.0.name }}" />
+                                                    {{ cat.0.name }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% if cat.1 %}
+                                        <ul>
+                                            <li>
+                                                <a href="{% url 'core:category-product-list' cid=cat.1.cid %}">
+                                                    <img src="{{ cat.1.image.url }}" alt="{{ cat.1.name }}" />
+                                                    {{ cat.1.name }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% if cat_meny|slice:"3:" %}
+                                <div class="more_categories">
+                                    <span class="icon"></span>
+                                    <span class="heading-sm-1">Показати більше...</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block font-heading">
+                            <nav>
+                                <ul>
+                                    <li class="hot-deals"><img src="{% static 'assets/imgs/theme/icons/icon-hot.svg' %}" alt="гарячі пропозиції" /><a href="{% url 'core:product-list'  %}">Магазин</a></li>
+                                    <li>
+                                        <a class="active" href="{% url 'core:index' %}">Головна</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'core:category-list' %}">Категорії <i class="fi-rs-angle-down"></i></a>
+                                        <ul class="sub-menu">
+                                            {% for c in categories %}
+                                            <li><a href="{% url 'core:category-product-list' c.cid %}">{{c.name}}</a></li>
+                                            {% endfor %}
+                                            <hr>
+                                            <li><a href="{% url 'core:category-list' %}">Усі категорії</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="position-static">
+                                        <a href="#">Каталог<i class="fi-rs-angle-down"></i></a>
+                                        <ul class="mega-menu">
+                                            {% for c in categories|slice:"4" %}
+                                            <li class="sub-mega-menu sub-mega-menu-width-22">
+                                                <a class="menu-title" href="{% url 'core:category-product-list' c.cid %}">{{c.name}}</a>
+                                                <ul>
+                                                    {% if c.precategory_set.all %}
+                                                    <ul>
+                                                        {% for precata in c.precategory_set.all|slice:"3" %}
+                                                            <li>
+                                                                <a href="{% url 'core:category-product-list' c.cid %}">{{ precata }}</a>
+                        
+                                                            </li>
+                                                        {% endfor %}
+                                                        {% comment %} {% if category.precategory_set.all.count > 1 %}
+                                                        <li>
+                                                            <a href="">More</a>
+                                                        </li>
+                                                        {% endif %} {% endcomment %}
+                                                    </ul>
+                                                    {% endif %}
+                                                </ul>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">Сторінки <i class="fi-rs-angle-down"></i></a>
+                                        <ul class="sub-menu">
+                                            <li><a href="{% url 'core:about_us' %}">Про нас</a></li>
+                                            <li><a href="{% url 'core:contact' %}">Контакти</a></li>
+                                            <li><a href="{% url 'core:dashboard' %}">Мій кабінет</a></li>
+                                            <li><a href="{% url 'core:purchase_guide' %}">Посібник покупця</a></li>                                            
+                                             
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'core:contact' %}">Контакти</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="hotline d-none d-lg-flex">
+                        <img src="{% static 'assets/imgs/theme/icons/icon-headphone.svg' %}" alt="гаряча лінія" />
+                        <p>1900 - 888<span>Центр підтримки 24/7</span></p>
+                    </div>
+                    <div class="header-action-icon-2 d-block d-lg-none">
+                        <div class="burger-icon burger-icon-white">
+                            <span class="burger-icon-top"></span>
+                            <span class="burger-icon-mid"></span>
+                            <span class="burger-icon-bottom"></span>
+                        </div>
+                    </div>
+                    <div class="header-action-right d-block d-lg-none">
+                        <div class="header-action-2">
+                            <div class="header-action-icon-2">
+                                <a href="{% url 'core:wishlist' %}">
+                                    <img alt="Серце" src="{% static 'assets/imgs/theme/icons/icon-heart.svg' %}" />
+                                    {% if request.user.is_authenticated %}
+                                    <span class="pro-count blue">{{ wishlist.count }}</span>
+                                    {% else %}
+                                    <span class="pro-count blue">0</span>
+                                    {% endif %}
+                                </a>
+                            </div>
+                            <div class="header-action-icon-2">
+                                <a class="mini-cart-icon" href="{% url 'core:cart' %}">
+                                    <img alt="Кошик" src="{% static 'assets/imgs/theme/icons/icon-cart.svg' %}" />
+                                    <span class="pro-count white cart-items-count">{{ request.session.cart_data_obj|length }}</span>
+                                </a>
+                                <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                    <div class="shopping-cart-footer">
+                                        <div class="shopping-cart-button">
+                                            <a href="{% url 'core:cart' %}">Переглянути кошик</a>
+                                            <a href="{% url 'core:checkout' %}">Оформити замовлення</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{message.tags}}">
+                            <strong>{{ message }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <script>
+                    setTimeout (() => {
+                        $(".alert").alert("close");
+                    }, 3000)
+                </script>
+            </div>
+        </div>
+    </header>
+    <div class="mobile-header-active mobile-header-wrapper-style">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-top">
+                <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
+                    <button class="close-style search-close">
+                        <i class="icon-top"></i>
+                        <i class="icon-bottom"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mobile-header-content-area">
+                <div class="mobile-search search-style-3 mobile-header-border">
+                    <form action="#">
+                        <input type="text" placeholder="Пошук товарів..." />
+                        <button type="submit"><i class="fi-rs-search"></i></button>
+                    </form>
+                </div>
+                <div class="mobile-menu-wrap mobile-header-border">
+                    <!-- mobile menu start -->
+                    <nav>
+                        <ul class="mobile-menu font-heading">
+                            <li class="menu-item-has-children">
+                                <a href="{% url 'core:index' %}">Головна</a>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="{% url 'core:product-list' %}">Магазин</a>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Категорії</a>
+                                <ul class="dropdown">
+                                {% for c in categories %}
+                                    <li class="menu-item-has-children">
+                                    <a href="{% url 'core:category-product-list' c.cid %}">{{ c.name }}</a>
+                                    {% if c.precategory_set.all %}
+                                        <ul class="dropdown">
+                                            {% for precata in c.precategory_set.all %}
+                                            <li>
+                                                <a href="{% url 'core:category-product-list' c.cid %}">{{ precata }}</a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                    {% endif %}
+                                    </li>
+                                {% endfor %}
+                                </ul>
+
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Сторінки</a>
+                                <ul class="dropdown">
+                                        <li><a href="{% url 'core:about_us' %}">Про нас</a></li>
+                                        <li><a href="{% url 'core:contact' %}">Контакти</a></li>
+                                        <li><a href="{% url 'core:purchase_guide' %}">Посібник покупця</a></li>    
+                                        <li><a href="{% url 'core:dashboard' %}">Мій кабінет</a></li>
+                                        {% if request.user.is_authenticated %}
+                                        <li><a href="{% url 'userauths:sign-out' %}">Вийти</a></li>
+                                        {% endif %}
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">Мова</a>
+                                <ul class="dropdown">
+                                    <li><a href="#">Українська</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <!-- mobile menu end -->
+                </div>
+                <div class="mobile-header-info-wrap">
+                    <div class="single-mobile-header-info">
+                        <a href="page-contact.html"><i class="fi-rs-marker"></i> Наше місцезнаходження Магістральна вулиця, 98, Запоріжжя</a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="{% url 'userauths:sign-in' %}"><i class="fi-rs-user"></i>Увійти / Зареєструватися </a>
+                    </div>
+                    <div class="single-mobile-header-info">
+                        <a href="#"><i class="fi-rs-headphones"></i>(+38) 066 56 91 854</a>
+                    </div>
+                </div>
+                <div class="mobile-social-icon mb-50">
+                    <h6 class="mb-15">Слідкуйте за нами</h6>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-facebook-white.svg' %}" alt="" /></a>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-twitter-white.svg' %}" alt="" /></a>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-instagram-white.svg' %}" alt="" /></a>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-pinterest-white.svg' %}" alt="" /></a>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-youtube-white.svg' %}" alt="" /></a>
+                </div>
+                <div class="site-copyright">Copyright 2023 - Present. Усі права захищені.</div>
+            </div>
+        </div>
+    </div>
+
+    {% block content %}
+
+
+
+    {% endblock content %}
+
+
+
+    <section class="newsletter mb-15">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="position-relative newsletter-inner">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="featured section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-1-5 col-md-4 col-12 col-sm-6 mb-md-4 mb-xl-0">
+                    <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                        <div class="banner-icon">
+                            <img src="{% static 'assets/imgs/theme/icons/icon-1.svg' %}" alt="" />
+                        </div>
+                        <div class="banner-text">
+                            <h3 class="icon-box-title">Найкращі ціни та пропозиції</h3>
+                            <p>Замовлення на суму від $50</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                    <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                        <div class="banner-icon">
+                            <img src="{% static 'assets/imgs/theme/icons/icon-2.svg' %}" alt="" />
+                        </div>
+                        <div class="banner-text">
+                            <h3 class="icon-box-title">Безкоштовна доставка</h3>
+                            <p>24/7 чудові сервіси</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                    <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                        <div class="banner-icon">
+                            <img src="{% static 'assets/imgs/theme/icons/icon-3.svg' %}" alt="" />
+                        </div>
+                        <div class="banner-text">
+                            <h3 class="icon-box-title">Велика щоденна угода</h3>
+                            <p>Коли ви підписуєтеся</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                    <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                        <div class="banner-icon">
+                            <img src="{% static 'assets/imgs/theme/icons/icon-4.svg' %}" alt="" />
+                        </div>
+                        <div class="banner-text">
+                            <h3 class="icon-box-title">Широкий асортимент</h3>
+                            <p>Мега Знижки</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                    <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                        <div class="banner-icon">
+                            <img src="{% static 'assets/imgs/theme/icons/icon-5.svg' %}" alt="" />
+                        </div>
+                        <div class="banner-text">
+                            <h3 class="icon-box-title">Легке повернення</h3>
+                            <p>Протягом 30 днів</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1-5 col-md-4 col-12 col-sm-6 d-xl-none">
+                    <div class="banner-left-icon d-flex align-items-center wow fadeIn animated">
+                        <div class="banner-icon">
+                            <img src="{% static 'assets/imgs/theme/icons/icon-6.svg' %}" alt="" />
+                        </div>
+                        <div class="banner-text">
+                            <h3 class="icon-box-title">Безпечна доставка</h3>
+                            <p>Протягом 30 днів</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="section-padding footer-mid">
+        <div class="container pt-15 pb-20">
+            <div class="row">
+                <div class="col">
+                    <div class="widget-about font-md mb-md-3 mb-lg-3 mb-xl-0">
+                        <div class="logo mb-30">
+                            <p class="font-lg text-heading">Купи в нас, залишимось друзями</p>
+                        </div>
+                        <ul class="contact-infor">
+                            <li><img src="{% static 'assets/imgs/theme/icons/icon-location.svg' %}" alt="" /><strong>Адреса:</strong> <span>Магістральна вулиця, 98, Запоріжжя </span></li>
+                            <li><img src="{% static 'assets/imgs/theme/icons/icon-contact.svg' %}" alt="" /><strong>Телефон:</strong><span>(+38) 066 56 91 854</span></li>
+                            {% comment %} <li><img src="{% static 'assets/imgs/theme/icons/icon-email-2.svg' %}" alt="" /><strong>Email:</strong><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a190b060f2a240f191e44090507"></a></span></li> {% endcomment %}
+                            <li><img src="{% static 'assets/imgs/theme/icons/icon-clock.svg' %}" alt="" /><strong>Години:</strong><span>10:00 - 18:00, пн - сб</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-link-widget col">
+                    <h4 class="widget-title">Компанія</h4>
+                    <ul class="footer-list mb-sm-5 mb-md-0">
+                        <li><a href="{% url 'core:about_us' %}">Про нас</a></li>
+                        <li><a href="{% url 'core:purchase_guide' %}">Інформація по доставці</a></li>
+                        <li><a href="{% url 'core:contact' %}">Зв'язатися з нами</a></li>
+                    </ul>
+                </div>
+                <div class="footer-link-widget col">
+                    <h4 class="widget-title">Обліковий запис</h4>
+                    <ul class="footer-list mb-sm-5 mb-md-0">
+                        <li><a href="{% url 'userauths:sign-in' %}">Увійти</a></li>
+                        <li><a href="{% url 'core:cart' %}">Переглянути кошик</a></li>
+                        <li><a href="{% url 'core:wishlist' %}">Мій список бажань</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container pb-30">
+        <div class="row align-items-center">
+            <div class="col-12 mb-30">
+                <div class="footer-bottom"></div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                <p class="font-sm mb-0">&copy; 2023, <strong class="text-brand">DomStory</strong><br />Усі права захищено</p>
+            </div>
+            <div class="col-xl-4 col-lg-6 text-center d-none d-xl-block">
+                <div class="hotline d-lg-inline-flex mr-30">
+                    <img src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}" alt="hotline" style="width: 20px; height: 20px;" />
+                    <p>066 56 91 854<span>Робочий 8:00 - 16:00</span></p>
+                </div>
+                <div class="hotline d-lg-inline-flex">
+                    <img src="{% static 'assets/imgs/theme/icons/phone-call.svg' %}" alt="hotline" style="width: 20px; height: 20px;" />
+                    <p>066 56 91 854<span>Центр підтримки 24/7</span></p>
+                </div>
+            </div>
+            
+            <div class="col-xl-4 col-lg-6 col-md-6 text-end d-none d-md-block">
+                <div class="mobile-social-icon">
+                    <h6>Підписуйтесь на нас</h6>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-facebook-white.svg' %}" alt="" /></a>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-twitter-white.svg' %}" alt="" /></a>
+                    <a href="#"><img src="{% static 'assets/imgs/theme/icons/icon-telegram-white.svg' %}" alt="" /></a>
+                </div>
+                <p class="font-sm">Отримайте до 15% знижки при підписці</p>
+            </div>
+        </div>
+    </div>
+    
+    </footer>
+    <script src="{% static 'assets/js/vendor/modernizr-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/jquery-migrate-3.3.0.min.js' %}"></script>
+    <script src="{% static 'assets/js/vendor/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/slick.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.syotimer.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/wow.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/slider-range.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/perfect-scrollbar.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/magnific-popup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/select2.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/waypoints.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/counterup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/images-loaded.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/isotope.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/scrollup.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.vticker-min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.theia.sticky.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/jquery.elevatezoom.js' %}"></script>
+    <script src="{% static 'assets/js/main.js' %}"></script>
+    <script src="{% static 'assets/js/shop.js' %}"></script>
+    <script src="{% static 'assets/js/function.js' %}"></script>
+    <script>
+    $(document).ready(function() {
+    $('.add-to-cart-btn').click(function(e) {
+        e.preventDefault(); // Prevent the default behavior
+
+        var productId = $(this).data('index'); // Get the product ID
+        var quantity = $("#product-quantity").val(); // Get the quantity from the input field
+        var messageElement = $('#messages');
+
+        if (!isUserAuthenticated()) {
+            // Перенаправляем пользователя на страницу входа
+            window.location.href = '/user/sign-in/';
+            return;
+        }
+
+        if (!isUserAuthenticated()) {
+            // Перенаправляем пользователя на страницу входа
+            window.location.href = '/user/sign-in/';
+            return;
+        }
+
+        $.ajax({
+            url: '/add-item/' + productId + '?quantity=' + quantity,
+            dataType: 'json',
+            success: function(data) {
+                if (data.success) {
+                    // Reload the page after a successful addition
+                    location.reload();
+                } else {
+                    messageElement.html('Сталася помилка при додаванні товару до кошику').addClass('error-message').fadeIn().delay(3000).fadeOut();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.log('Ошибка AJAX:', error);
+                messageElement.html('Сталася помилка при додаванні товару до кошику').addClass('error-message').fadeIn().delay(3000).fadeOut();
+            }
+        });
+    });
+  $('.add-to-wishlist').click(function(e) {
+    e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+
+    var productId = $(this).data('product-item');
+    var messageElement = $('#messages');
+
+    // Проверяем, аутентифицирован ли пользователь
+    if (!isUserAuthenticated()) {
+      // Перенаправляем пользователя на страницу входа
+      window.location.href = '/user/sign-in/';
+      return;
+    }
+
+    // AJAX-запрос для добавления товара в список желаемого
+    $.ajax({
+      url: '/add-to-wishlist/',
+      data: {
+        'id': productId
+      },
+      dataType: 'json',
+      success: function(data) {
+        if (data.success) {
+          // Перезагрузить страницу после успешного добавления товара
+          location.reload();
+        } else {
+          messageElement.html('Сталася помилка при додаванні товару до списку бажань').addClass('error-message').fadeIn().delay(3000).fadeOut();
+        }
+      },
+      error: function(xhr, status, error) {
+        console.log('Ошибка AJAX:', error);
+        messageElement.html('Сталася помилка при додаванні товару до списку бажань').addClass('error-message').fadeIn().delay(3000).fadeOut();
+      }
+    });
+  });
+
+
+  function isUserAuthenticated() {
+    return $('body').hasClass('authenticated');
+  }
+});
+    </script>
+</body>
+</html>

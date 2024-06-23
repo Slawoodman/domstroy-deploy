@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Панель керування GlavDomStroy</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:type" content="" />
+    <meta property="og:url" content="" />
+    <meta property="og:image" content="" />
+    <!-- Фавікон -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets2/imgs/theme/favicon.svg" />
+    <!-- Стилі шаблону -->
+    <link href="{% static 'assets2/css/main.css' %}" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="{% url 'core:index' %}" class="brand-wrap">
+                    <img src="" class="logo" alt="Панель керування GlavDomStroy" />
+                </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item active">
+                    <a class="menu-link" href="{% url 'useradmin:dashboard' %}">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Панель керування</span>
+                        </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="{% url 'useradmin:dashboard-products' %}">
+                        <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Товари</span>
+                        </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="{% url 'useradmin:dashboard' %}">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Замовлення</span>
+                    </a>
+                </li>
+            </ul>
+            <hr />
+            <br />
+            <br />
+        </nav>
+    </aside>
+    <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search">
+                <form class="searchform">
+                    <div class="input-group">
+                        <input list="search_terms" type="text" class="form-control" placeholder="Пошуковий запит" />
+                        <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+                    </div>
+                    <datalist id="search_terms">
+                            <option value="Ша 5"></option>
+                            <option value="Назва менеджера"></option>
+                             <option value="Id чеку"></option>
+                        </datalist>
+                </form>
+            </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="{% static 'assets2/imgs/people/avatar-2.png' %}" alt="Користувач" /></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item text-danger" href="{% url 'userauths:sign-out' %}"><i class="material-icons md-exit_to_app"></i>Вийти</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+        
+
+        {% block content %}
+          
+        {% endblock content %}
+     
+
+
+        <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear());
+                    </script>
+                    &copy; Nest - Шаблон HTML для Електронної комерції.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">Всі права захищені</div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="{% static 'assets2/js/vendors/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'assets2/js/vendors/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets2/js/vendors/select2.min.js' %}"></script>
+    <script src="{% static 'assets2/js/vendors/perfect-scrollbar.js' %}"></script>
+    <script src="{% static 'assets2/js/vendors/jquery.fullscreen.min.js' %}"></script>
+    <script src="{% static 'assets2/js/vendors/chart.js' %}"></script>
+    <!-- Основний скрипт -->
+    <script src="{% static 'assets2/js/main.js?v=1.1' %}" type="text/javascript"></script>
+    <!-- <script src="{% static 'assets2/js/custom-chart.js' %}" type="text/javascript"></script> -->
+</body>
+
+</html>
